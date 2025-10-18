@@ -87,6 +87,17 @@
       font-size: 0.9em;
     }
 
+    #confirmText {
+      margin-top: 15px;
+      font-size: 1em;
+      color: #555;
+      background: #fffaf9;
+      border-radius: 10px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      display: none;
+    }
+
     @media (max-width: 600px) {
       header h1 {
         font-size: 1.8em;
@@ -111,9 +122,9 @@
   <section id="story">
     <h2>Perjalanan Kami</h2>
     <p>
-      Dari bangku sekolah hingga menuju kursi pelaminan,  
+      Dari bangku sekolah menuju kursi pelaminan,  
       kisah sederhana ini tumbuh bersama waktu —  
-      berawal dari tawa kecil, kini menuju janji suci. 💍
+      dari tawa remaja, kini menuju cinta yang nyata. 💍
     </p>
   </section>
 
@@ -136,6 +147,8 @@
     </select>
     <textarea id="rsvpMsg" placeholder="Ucapan atau doa (optional)"></textarea>
     <button onclick="openWhatsApp()">Kirim via WhatsApp</button>
+
+    <div id="confirmText"></div>
   </section>
 
   <footer>
@@ -160,12 +173,24 @@
 
     // WhatsApp RSVP
     function openWhatsApp() {
-      const name = encodeURIComponent(document.getElementById('rsvpName').value || 'Saya');
-      const attend = encodeURIComponent(document.getElementById('rsvpAttend').value || 'Hadir');
-      const msg = encodeURIComponent(document.getElementById('rsvpMsg').value || '');
+      const name = document.getElementById('rsvpName').value || 'Saya';
+      const attend = document.getElementById('rsvpAttend').value || 'Hadir';
+      const msg = document.getElementById('rsvpMsg').value || '';
       const phone = '6283138466654';
-      const text = `Halo Raju & Siti 🌸%0ASaya ${name} ingin ${attend.toLowerCase()} di acara kalian.%0A${msg}%0ASemoga acaranya lancar, penuh berkah, dan jadi awal yang indah untuk kalian berdua 🤍`;
-      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+
+      // tampilkan teks konfirmasi
+      const confirmBox = document.getElementById('confirmText');
+      confirmBox.style.display = 'block';
+      confirmBox.innerHTML = `Halo Raju & Siti 🌸<br>
+      Saya <b>${name}</b> ingin ${attend.toLowerCase()} di acara kalian.<br>
+      ${msg ? msg + '<br>' : ''}
+      Semoga acaranya lancar, penuh berkah, dan jadi awal yang indah untuk kalian berdua 🤍`;
+
+      // redirect ke WhatsApp setelah delay
+      const text = encodeURIComponent(`Halo Raju & Siti 🌸\nSaya ${name} ingin ${attend.toLowerCase()} di acara kalian.\n${msg}\nSemoga acaranya lancar, penuh berkah, dan jadi awal yang indah untuk kalian berdua 🤍`);
+      setTimeout(() => {
+        window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+      }, 2000);
     }
   </script>
 </body>
